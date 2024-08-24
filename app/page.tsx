@@ -7,13 +7,15 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-
+import {useTheme } from 'next-themes';
 
 export default function Home() {
   const [base64, setBase64] = useState<string>('');
   const [fileName, setFileName] = useState<string>('document.pdf');
   const [inputType, setInputType] = useState<'file' | 'base64'>('file');
   const [copied, setCopied] = useState<boolean>(false);
+  const { theme, setTheme } = useTheme();
+
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -37,32 +39,37 @@ export default function Home() {
 
   return (
     <>
-      <Head>
-        <title>Base64 to PDF Converter</title>
-        <meta name="description" content="Convert base64 strings to PDF and vice versa with our easy-to-use online tool." />
-        <meta name="keywords" content="base64 to pdf, pdf to base64, online converter, download pdf, view pdf" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta charSet="UTF-8" />
-        <meta property="og:title" content="Base64 to PDF Converter" />
-        <meta property="og:description" content="Convert base64 strings to PDF and vice versa with our easy-to-use online tool." />
-        <meta property="og:url" content="https://pdf-app-livid.vercel.app/" />
-        <meta property="og:type" content="website" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <div className="container mx-auto p-4 max-w-lg">
-        <h1 className="text-3xl font-bold text-center mb-8">Base64 to PDF Converter</h1>
-        <div className="flex flex-col items-center space-y-6">
+      <div className="container mx-auto p-6 max-w-md bg-white dark:bg-gray-900 shadow-lg rounded-lg">
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-4xl font-extrabold text-gray-800 dark:text-gray-100">Base64 to PDF Converter</h1>
+          <Button onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')} className="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100 rounded-lg p-2">
+            {theme === 'light' ? '🌙' : '☀️'}
+          </Button>
+        </div>
+        <div className="flex flex-col items-center space-y-8">
 
           {/* Radio Buttons for Input Type Selection */}
           <RadioGroup 
             value={inputType} 
             onValueChange={(value: 'file' | 'base64') => setInputType(value)}
-            className="flex justify-center mb-4"
+            className="flex justify-center space-x-8"
           >
-            <RadioGroupItem value="file" id="file" />
-            <label htmlFor="file" className="ml-2 mr-6">Upload PDF File</label>
-            <RadioGroupItem value="base64" id="base64" />
-            <label htmlFor="base64" className="ml-2">Paste Base64 String</label>
+            <div className="flex items-center">
+              <RadioGroupItem value="file" id="file" className="hidden" />
+              <label htmlFor="file" className={`cursor-pointer px-4 py-2 rounded-lg text-lg font-semibold transition ${
+                inputType === 'file' ? 'bg-blue-500 text-white' : 'bg-gray-200 dark:bg-gray-700 dark:text-gray-100 text-gray-700'
+              }`}>
+                Upload PDF File
+              </label>
+            </div>
+            <div className="flex items-center">
+              <RadioGroupItem value="base64" id="base64" className="hidden" />
+              <label htmlFor="base64" className={`cursor-pointer px-4 py-2 rounded-lg text-lg font-semibold transition ${
+                inputType === 'base64' ? 'bg-blue-500 text-white' : 'bg-gray-200 dark:bg-gray-700 dark:text-gray-100 text-gray-700'
+              }`}>
+                Paste Base64 String
+              </label>
+            </div>
           </RadioGroup>
 
           {/* File Upload Input */}
@@ -72,17 +79,17 @@ export default function Home() {
                 type="file"
                 accept="application/pdf"
                 onChange={handleFileUpload}
-                className="mb-4"
+                className="mb-4 border-2 border-gray-300 dark:border-gray-600 p-2 rounded-lg w-full"
               />
               <Textarea
                 value={base64}
                 placeholder="Base64 string will appear here"
-                className="w-full"
+                className="w-full border-2 border-gray-300 dark:border-gray-600 p-3 rounded-lg focus:outline-none focus:border-blue-500 dark:focus:border-blue-500 dark:bg-gray-800 dark:text-gray-100"
                 rows={6}
                 readOnly
               />
               {base64 && (
-                <Button onClick={handleCopyToClipboard} className="w-full">
+                <Button onClick={handleCopyToClipboard} className="w-full mt-4 bg-blue-600 text-white hover:bg-blue-700 rounded-lg py-3 transition">
                   {copied ? 'Copied!' : 'Copy Base64 String'}
                 </Button>
               )}
@@ -96,24 +103,24 @@ export default function Home() {
                 value={base64}
                 onChange={(e) => setBase64(e.target.value)}
                 placeholder="Paste base64 string here"
-                className="w-full"
+                className="w-full border-2 border-gray-300 dark:border-gray-600 p-3 rounded-lg focus:outline-none focus:border-blue-500 dark:focus:border-blue-500 dark:bg-gray-800 dark:text-gray-100"
                 rows={6}
               />
-              <Button onClick={handleConvertBase64ToPdf} className="w-full bg-green-500">
+              <Button onClick={handleConvertBase64ToPdf} className="w-full mt-4 bg-green-600 text-white hover:bg-green-700 rounded-lg py-3 transition">
                 Convert to PDF and View
               </Button>
             </>
           )}
 
           {/* Action Buttons */}
-          <div className="flex space-x-4 w-full">
+          <div className="flex space-x-4 w-full mt-6">
             {inputType === 'file' && base64 && (
-              <Button onClick={() => base64ToPdf(base64, fileName)} className="w-full bg-blue-500">
+              <Button onClick={() => base64ToPdf(base64, fileName)} className="w-full bg-blue-600 text-white hover:bg-blue-700 rounded-lg py-3 transition">
                 Download PDF
               </Button>
             )}
             {inputType === 'base64' && (
-              <Button onClick={() => viewPdf(base64)} className="w-full bg-green-500">
+              <Button onClick={() => viewPdf(base64)} className="w-full bg-green-600 text-white hover:bg-green-700 rounded-lg py-3 transition">
                 View PDF
               </Button>
             )}
