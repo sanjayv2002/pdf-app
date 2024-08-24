@@ -45,7 +45,8 @@ export default function Home() {
         <meta charSet="UTF-8" />
         <meta property="og:title" content="Base64 to PDF Converter" />
         <meta property="og:description" content="Convert base64 strings to PDF and vice versa with our easy-to-use online tool." />
-        <meta property="og:url" content="https://yourwebsite.com/" />
+        <meta name="google-adsense-account" content="ca-pub-6216123566178434"></meta>
+        <meta property="og:url" content="https://pdf-app-livid.vercel.app/" />
         <meta property="og:type" content="website" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
