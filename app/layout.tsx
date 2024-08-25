@@ -28,6 +28,8 @@ export default function RootLayout({
         <meta property="og:url" content="https://pdf-app-livid.vercel.app/" />
         <meta property="og:type" content="website" />
         <link rel="icon" href="/favicon.ico" />
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6216123566178434"
+     crossOrigin="anonymous"></script>
        </head>
       <body className={inter.className}>          
         <ThemeProvider
