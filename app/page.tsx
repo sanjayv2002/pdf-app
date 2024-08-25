@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import {useTheme } from 'next-themes';
+import { useTheme } from 'next-themes';
 
 export default function Home() {
   const [base64, setBase64] = useState<string>('');
@@ -15,7 +15,6 @@ export default function Home() {
   const [inputType, setInputType] = useState<'file' | 'base64'>('file');
   const [copied, setCopied] = useState<boolean>(false);
   const { theme, setTheme } = useTheme();
-
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -39,6 +38,14 @@ export default function Home() {
 
   return (
     <>
+      <Head>
+        <title>Base64 to PDF Converter - Convert and View PDFs</title>
+        <meta
+          name="description"
+          content="Convert your PDF files to Base64 format and view them instantly. This tool also allows you to convert Base64 strings back to PDF."
+        />
+      </Head>
+
       <div className="container mx-auto p-6 max-w-md bg-white dark:bg-gray-900 shadow-lg rounded-lg">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-4xl font-extrabold text-gray-800 dark:text-gray-100">Base64 to PDF Converter</h1>
@@ -46,9 +53,13 @@ export default function Home() {
             {theme === 'light' ? '🌙' : '☀️'}
           </Button>
         </div>
-        <div className="flex flex-col items-center space-y-8">
 
-          {/* Radio Buttons for Input Type Selection */}
+        <p className="text-gray-700 dark:text-gray-300 mb-6">
+          Convert your PDF files to Base64 strings or convert Base64 strings back to PDFs. This tool provides a seamless way to handle your PDF conversion needs.
+          Make sure to upload a valid PDF file or paste a correct Base64 string to proceed.
+        </p>
+
+        <div className="flex flex-col items-center space-y-8">
           <RadioGroup 
             value={inputType} 
             onValueChange={(value: 'file' | 'base64') => setInputType(value)}
@@ -72,7 +83,6 @@ export default function Home() {
             </div>
           </RadioGroup>
 
-          {/* File Upload Input */}
           {inputType === 'file' && (
             <>
               <Input
@@ -96,7 +106,6 @@ export default function Home() {
             </>
           )}
 
-          {/* Base64 Text Area Input */}
           {inputType === 'base64' && (
             <>
               <Textarea
@@ -112,7 +121,6 @@ export default function Home() {
             </>
           )}
 
-          {/* Action Buttons */}
           <div className="flex space-x-4 w-full mt-6">
             {inputType === 'file' && base64 && (
               <Button onClick={() => base64ToPdf(base64, fileName)} className="w-full bg-blue-600 text-white hover:bg-blue-700 rounded-lg py-3 transition">
